@@ -1,0 +1,106 @@
+:host {
+  //TODO: 1.0 Consider using CSS custom properties for theming and consistency
+  --cell-size: min(calc(((100vw - 30px) / 9)), 60px);
+  --board-size: calc(var(--cell-size) * 9);
+  --board-boarder-width: 4px;
+
+
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, auto) 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 10px;
+  margin: 10px;
+  padding-bottom: 10px;
+
+  .board-title{
+    //TODO: 1.0 Add responsive typography scaling for mobile devices
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .partition-container {
+    height: min-content;
+    grid-row: span 1;
+    grid-area: span 1 / span 3;
+  }
+
+  //.chat-container {
+  //  height: 500px;
+  //}
+
+  .board-container, .settings-container, .chat-container {
+    grid-column: span 3;
+  }
+
+  @media (min-width: 1200px) {
+    //TODO: 1.0 Consider consolidating media queries for better maintainability
+    .partition-container {
+      grid-area: span 1 / span 1;
+    }
+    .board-container {
+      grid-area: span 3 / span 2;
+    }
+    .chat-container {
+      grid-column: span 3;
+    }
+  }
+  @media (min-width: 1500px) {
+    grid-template-columns: minmax(0, auto) 1fr 1fr;
+
+    .board-container {
+      grid-column: span 1;
+      grid-row: span 3;
+    }
+    .settings-container, .chat-container {
+      grid-column: span 1;
+    }
+    .chat-container {
+      grid-column: 3/4;
+      grid-row: 1/4;
+    }
+  }
+
+  mat-accordion {
+    flex: 1;
+  }
+
+  .board-container {
+    height: 100%;
+    position: relative;
+    //margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    .board {
+      position: relative;
+    }
+
+  }
+
+  .board-actions {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .board-actions-group {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .settings-group {
+    display: grid;
+  }
+}
+

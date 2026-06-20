@@ -1,0 +1,19 @@
+:host {
+  .cell, .cell-value {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    outline: none;
+    caret-color: transparent;
+  }
+
+  .cell-value {
+    pointer-events: none;
+  }
+}

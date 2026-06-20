@@ -1,0 +1,45 @@
+Pre-Interview Candidate Task
+Sudoku solving application in Angular.
+  You can use the api at (h ps://github.com/bertoort/sugoku):
+  - GET https://sugoku.onrender.com/board?difficulty=random to generate data
+  - POST https://sugoku.onrender.com/validate to validate a board
+  - POST https://sugoku.onrender.com/solve to solve a board
+
+  The player should be presented with a Sudoku board on page load.
+  They should be able to
+
+ Choose a difficulty for the board (easy/medium/hard/random) and then start the game.
+ Enter numbers in the empty squares (not allowed to change the prefilled squares)
+ Have a “Validate” button to verify if they have solved it.
+ Have a “Solve” button that auto-solves the puzzle.
+ No restrictions on what other frameworks can be used but it should use Angular.
+
+  Things to consider while implementing: state management, valida on, tes ng, UX, making
+the project as production ready as possible.
+  Extra points: desktop/mobile mode, mul player mode.
+  The solution should be submitted as a gitlab/github repository or a zip archive.
+
+type Diﬃculty =
+  'easy' | 'medium' | 'hard';
+type Board = Array<Array<number>>;
+//GET h ps://sugoku.onrender.com/board?diﬃculty=easy
+type BoardResponse = {
+  board: Board;
+};
+type SudokuRequest = {
+  board: Board;
+};
+//POST h ps://sugoku.onrender.com/solve
+type SolveResponse = {
+  diﬃculty: Diﬃculty;
+  solution: Board;
+  status: 'solved' | 'broken' | 'unsolvable';
+};
+//POST h ps://sugoku.onrender.com/validate
+type ValidateResponse = {
+  status: 'solved' | 'broken';
+};
+
+
+Note: - Please complete the task and submit this back to christopher.conlon@entaingroup.com
+within 7 days of receiving it.

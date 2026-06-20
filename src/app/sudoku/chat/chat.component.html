@@ -1,0 +1,36 @@
+<mat-accordion class="partition-container chat-container">
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Global Chat</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="chat-wrapper">
+      <div class="chat-messages" #chatMessagesContainer>
+        @for (message of chatMessages(); track message.id) {
+          <div class="chat-message"
+               [class.my-message]="message.author === myUserId()">
+            <span class="chat-author">{{ chatUsers()[message.author]?.username || message.author }}</span>
+            <span class="chat-text">{{ message.message }}</span>
+            <span class="chat-time">{{ message.timestamp | date:'shortTime' }}</span>
+          </div>
+        }
+        @if (chatMessages().length === 0) {
+          <div class="chat-empty">No messages yet. Start the conversation!</div>
+        }
+      </div>
+      <div class="chat-input-wrapper">
+        <mat-form-field class="chat-input">
+          <input
+            #chatInput
+            matInput
+            type="text"
+            placeholder="Type a message..."
+            (keydown.enter)="onSendMessage(chatInput.value); chatInput.value = ''"
+          />
+        </mat-form-field>
+        <button mat-button (click)="onSendMessage(chatInput.value); chatInput.value = ''" class="chat-send-button">
+          Send
+        </button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

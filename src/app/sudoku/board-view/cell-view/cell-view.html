@@ -1,0 +1,22 @@
+@if (cell().solution) {
+  <div class="cell-solution">
+    {{ cell().solution }}
+  </div>
+} @else {
+  <div class="cell"
+       #cellInputEl
+       [contentEditable]="true"
+       type="number"
+       inputmode="numeric"
+       (input)="onCellInput($event)"
+       (keydown)="onCellKeydown($event)"
+       (focus)="onCellFocus()">
+  </div>
+  <div class="cell-value"
+       [style.color]="cell().color === 'auto' ? null : cell().color">
+    @if (cell().value) {
+      {{ cell().value }}
+    }
+  </div>
+}
+

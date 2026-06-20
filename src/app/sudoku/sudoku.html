@@ -1,0 +1,137 @@
+<div class="partition-container board-container">
+  <div class="board-title">
+    <h3 class="difficulty"> Board Difficulty: ({{ board()?.difficulty | titlecase }})</h3>
+    <h3 class="status"> Game Status: ({{ gameStatus() | titlecase }})</h3>
+  </div>
+  <app-board
+    class="board"
+    [gameStatus]="gameStatus()"
+    [board]="board()"
+    [selectors]="selectors()"
+    (selectorMove)="onSelectorMove($event)"
+    (cellInput)="onCellInput($event)"
+  ></app-board>
+</div>
+
+<mat-accordion class="partition-container">
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Actions</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="board-actions">
+      <div class="board-actions-group">
+        <button matButton="filled" [disabled]="!canValidate()" (click)="onValidate()">Validate</button>
+        <button matButton="filled"
+                [disabled]="gameStatus() !== 'playing' ||
+                 board()?.owner !== myUserId()"
+                (click)="onSolve()">Solve
+        </button>
+      </div>
+      <div class="board-actions-group">
+        <button matButton="filled" (click)="onPlay()">Start New Game</button>
+
+        <button matButton="filled"
+                [disabled]="gameStatus() !== 'playing'"
+                (click)="onInvite()">Invite a friend
+        </button>
+
+        @if (isGameMultiplayer()) {
+          <button matButton="filled" (click)="onLeave()">Leave</button>
+        }
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+@if (isGameMultiplayer()) {
+  <mat-accordion class="partition-container">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Players</mat-panel-title>
+        <mat-panel-description> ({{ players().length === 1 ? `1 User` : `${players().length} Users` }})
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      @for (player of players(); track player) {
+        <div class="user">
+          <span>
+            @if (player.id === board()?.owner) {
+              (*)
+            }
+            {{ player.id }}
+            @if (player.username; as username) {
+              ({{username}})
+            }
+          </span>
+          @if (!isMyUser(player) && canKick()) {
+            <button matIconButton (click)="onKickUser(player)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </div>
+      }
+    </mat-expansion-panel>
+  </mat-accordion>
+}
+<mat-accordion class="partition-container">
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Game Settings</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="settings-group">
+      <label>UserId: {{ myUserId() }}</label>
+      <mat-form-field>
+        <mat-label>UserName</mat-label>
+        <input matInput type="text" [formField]="usernameField">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Difficulty</mat-label>
+        <mat-select
+          (valueChange)="onDifficultyChange($event)"
+          [value]="selectedDifficulty()"
+        >
+          @for (difficulty of difficulties; track difficulty) {
+            <mat-option [value]="difficulty">{{ difficulty | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Color</mat-label>
+        <mat-select
+          class="color-picker"
+          (valueChange)="onColorChange($event)"
+          [style.color]="selectedColor()"
+          [value]="selectedColor()"
+        >
+          @for (color of colors; track color[1]) {
+            <mat-option class="color-picker_color-option"
+                        [value]="color[1]"
+                        [style.color]="color[1]">
+              {{ color[0] | titlecase }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<app-chat class="partition-container chat-container"></app-chat>
+
+<ng-template #confirmDialog let-data>
+  @if (data.title) {
+    <h2 mat-dialog-title>{{ data.title | titlecase }}</h2>
+  }
+  <mat-dialog-content class="mat-typography">
+    <p>{{ data.message ?? 'Are you sure you want to perform this action?' }}</p>
+  </mat-dialog-content>
+  @if (!data.alert) {
+    <mat-dialog-actions align="end">
+      <button matButton [mat-dialog-close]="false">{{ (data.cancelText ?? 'Cancel') | titlecase }}</button>
+      <button matButton [mat-dialog-close]="true" cdkFocusInitial>{{ (data.confirmText ?? 'Confirm') | titlecase }}
+      </button>
+    </mat-dialog-actions>
+  }
+</ng-template>
+
+
+
+
